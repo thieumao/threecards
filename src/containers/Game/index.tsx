@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components/native";
 import { Helmet } from "react-helmet";
-import QuestionListModal from "../../components/QuestionListModal";
+import HistoryModal from "components/HistoryModal";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import PrimaryButton from "components/buttons/PrimaryButton";
 import SecondaryButton from "components/buttons/SecondaryButton";
@@ -151,11 +151,6 @@ const Game: FC<Props> = () => {
 
   const [list, setList] = useState<number[]>([]);
 
-  const [isShowMenu, setIsShowMenu] = useState(false);
-  const onShowMenu = () => {
-    setIsShowMenu(true);
-  };
-
   const { width, height } = useWindowDimensions();
 
   const cardWidth = width < height ? width / 5 : height / 5;
@@ -294,8 +289,11 @@ const Game: FC<Props> = () => {
     setScore2(sum);
   };
 
+  const [isShowHistory, setIsShowHistory] = useState(false);
+
   const showHistory = () => {
-    onShowMenu();
+    setIsShowHistory(true);
+    
     console.log("allScores = ");
     console.log(allScores);
   };
@@ -306,9 +304,9 @@ const Game: FC<Props> = () => {
         <title>{"Three Cards"}</title>
       </Helmet>
       <Content>
-        <QuestionListModal
-          modalVisible={isShowMenu}
-          setModalVisible={() => setIsShowMenu(false)}
+        <HistoryModal
+          modalVisible={isShowHistory}
+          setModalVisible={() => setIsShowHistory(false)}
         />
         <RandomView>
           {score1 <= 0 && (
