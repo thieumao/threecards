@@ -101,14 +101,12 @@ const Score1 = styled.Text`
   font-weight: bold;
   font-size: 28px;
   color: ${Colors.RED};
-  margin-top: 8px;
 `;
 
 const Score2 = styled.Text`
   font-weight: bold;
   font-size: 28px;
   color: ${Colors.RED};
-  margin-bottom: 8px;
 `;
 
 interface Props {
@@ -266,7 +264,7 @@ const Game: FC<Props> = () => {
           setModalVisible={() => setIsShowMenu(false)}
         />
         <RandomView>
-          <SecondaryButton title='Show' onPress={() => showAbove()} />
+          {score1 <= 0 && <SecondaryButton title='Show' onPress={() => showAbove()} />}
           {score1 > 0 && <Score1>{score1}</Score1>}
         </RandomView>
         <ThreeCards>
@@ -297,7 +295,7 @@ const Game: FC<Props> = () => {
         </ThreeCards>
         <RandomView>
           {score2 > 0 && <Score2>{score2}</Score2>}
-          <SecondaryButton title='Show' onPress={() => showBelow()} />
+          {score2 <= 0 && <SecondaryButton title='Show' onPress={() => showBelow()} />}
         </RandomView>
         </Content>
       </Container>
