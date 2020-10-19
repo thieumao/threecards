@@ -1,17 +1,16 @@
-import React, { FC, useState, useEffect } from 'react';
-import styled from 'styled-components/native';
-import { Helmet } from 'react-helmet';
-import HeaderWithTitle from '../../components/HeaderWithTitle';
-import QuestionListModal from '../../components/QuestionListModal';
-import useWindowDimensions from 'hooks/useWindowDimensions';
-import PrimaryButton from 'components/buttons/PrimaryButton';
-import SecondaryButton from 'components/buttons/SecondaryButton';
-import Colors from 'theme/colors';
-import Fonts from 'theme/fonts';
-import { addScore, removeAllScores } from 'store/actionTypes/actionType';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { FC, useState } from "react";
+import styled from "styled-components/native";
+import { Helmet } from "react-helmet";
+import QuestionListModal from "../../components/QuestionListModal";
+import useWindowDimensions from "hooks/useWindowDimensions";
+import PrimaryButton from "components/buttons/PrimaryButton";
+import SecondaryButton from "components/buttons/SecondaryButton";
+import Colors from "theme/colors";
+import { addScore, removeAllScores } from "store/actionTypes/actionType";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllScores } from "store/selectors/selectors";
 
-const hidenCard = require("../../images/blue_back.png")
+const hidenCard = require("../../images/blue_back.png");
 const cards = [
   require("../../images/1H.png"),
   require("../../images/2H.png"),
@@ -76,8 +75,8 @@ const Content = styled.View`
 `;
 
 const Image = styled.Image<StyledProps>`
-  width: ${props => props.width}px;
-  height: ${props => props.height}px;
+  width: ${(props) => props.width}px;
+  height: ${(props) => props.height}px;
   resize-mode: contain;
   align-self: center;
 `;
@@ -93,6 +92,12 @@ const RandomView = styled.View`
   justify-content: center;
   align-items: center;
   margin-top: 20px;
+`;
+
+const HistoryView = styled.View`
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
 `;
 
 const Button = styled.TouchableOpacity`
@@ -122,7 +127,6 @@ const EmptyView = styled.View`
   width: 28px;
 `;
 
-
 interface Props {
   title: string;
   canBack?: boolean;
@@ -131,6 +135,7 @@ interface Props {
 
 const Game: FC<Props> = () => {
   const dispatch = useDispatch();
+  const allScores = useSelector(getAllScores);
 
   const [firstOpen, setFirstOpen] = useState(true);
 
@@ -154,7 +159,7 @@ const Game: FC<Props> = () => {
   const { width, height } = useWindowDimensions();
 
   const cardWidth = width < height ? width / 5 : height / 5;
-  const cardHeight = cardWidth * 3 / 2
+  const cardHeight = (cardWidth * 3) / 2;
 
   const randomNumber = (number) =>
     Math.floor(Math.random() * Math.floor(number));
@@ -178,7 +183,7 @@ const Game: FC<Props> = () => {
     setCard4(hidenCard);
     setCard5(hidenCard);
     setCard6(hidenCard);
-  }
+  };
 
   const showAllCards = () => {
     if (list.length != 6) {
@@ -190,7 +195,7 @@ const Game: FC<Props> = () => {
     setCard4(cards[list[3]]);
     setCard5(cards[list[4]]);
     setCard6(cards[list[5]]);
-  }
+  };
 
   const showAbove = () => {
     if (list.length != 6) {
@@ -200,7 +205,7 @@ const Game: FC<Props> = () => {
     setCard2(cards[list[1]]);
     setCard3(cards[list[2]]);
     showScoreTeam1();
-  }
+  };
 
   const showBelow = () => {
     if (list.length != 6) {
@@ -210,19 +215,32 @@ const Game: FC<Props> = () => {
     setCard5(cards[list[4]]);
     setCard6(cards[list[5]]);
     showScoreTeam2();
-  }
+  };
 
   const showCard = (position) => {
     switch (position) {
-      case 0: setCard1(cards[list[0]]); break;
-      case 1: setCard2(cards[list[1]]); break;
-      case 2: setCard3(cards[list[2]]); break;
-      case 3: setCard4(cards[list[3]]); break;
-      case 4: setCard5(cards[list[4]]); break;
-      case 5: setCard6(cards[list[5]]); break;
-      default: break;
+      case 0:
+        setCard1(cards[list[0]]);
+        break;
+      case 1:
+        setCard2(cards[list[1]]);
+        break;
+      case 2:
+        setCard3(cards[list[2]]);
+        break;
+      case 3:
+        setCard4(cards[list[3]]);
+        break;
+      case 4:
+        setCard5(cards[list[4]]);
+        break;
+      case 5:
+        setCard6(cards[list[5]]);
+        break;
+      default:
+        break;
     }
-  }
+  };
 
   const random = () => {
     hideAllCards();
@@ -230,20 +248,16 @@ const Game: FC<Props> = () => {
     setScore1(0);
     setScore2(0);
     setFirstOpen(false);
-  }
+  };
 
   const save = () => {
-    random();
     dispatch(addScore(list));
-  }
+    random();
+  };
 
   const playAgain = () => {
-    dispatch(removeAllScores());
-  }
-
-  useEffect(() => {
-    dispatch(removeAllScores());
-  }, []);
+    random();
+  };
 
   const getScore = (number) => {
     const div = number / 9;
@@ -256,12 +270,13 @@ const Game: FC<Props> = () => {
     } else {
       return Math.floor((number - 26) % 10);
     }
-  }
+  };
 
   const getSum = (number1, number2, number3) => {
-    const sum = (getScore(number1) + getScore(number2) + getScore(number3)) % 10;
+    const sum =
+      (getScore(number1) + getScore(number2) + getScore(number3)) % 10;
     return sum > 0 ? sum : 10;
-  }
+  };
 
   const showScoreTeam1 = () => {
     if (list.length != 6) {
@@ -269,7 +284,7 @@ const Game: FC<Props> = () => {
     }
     const sum = getSum(list[0], list[1], list[2]);
     setScore1(sum);
-  }
+  };
 
   const showScoreTeam2 = () => {
     if (list.length != 6) {
@@ -277,26 +292,28 @@ const Game: FC<Props> = () => {
     }
     const sum = getSum(list[3], list[4], list[5]);
     setScore2(sum);
-  }
+  };
+
+  const showHistory = () => {
+    onShowMenu();
+    console.log("allScores = ");
+    console.log(allScores);
+  };
 
   return (
-      <Container>
-        <Helmet>
-          <title>{'Three Cards'}</title>
-        </Helmet>
-        {/* <HeaderWithTitle
-          title={'Three Cards'}
-          canBack={false}
-          showMenu={true}
-          onShowMenu={() => onShowMenu()}
-        /> */}
-        <Content>
+    <Container>
+      <Helmet>
+        <title>{"Three Cards"}</title>
+      </Helmet>
+      <Content>
         <QuestionListModal
           modalVisible={isShowMenu}
           setModalVisible={() => setIsShowMenu(false)}
         />
         <RandomView>
-          {score1 <= 0 && <SecondaryButton title='Show' onPress={() => showAbove()} />}
+          {score1 <= 0 && (
+            <SecondaryButton title="Show" onPress={() => showAbove()} />
+          )}
           {score1 > 0 && <Score1>{score1}</Score1>}
         </RandomView>
         <ThreeCards>
@@ -309,17 +326,14 @@ const Game: FC<Props> = () => {
           <Button onPress={() => showCard(2)}>
             <Image source={card3} width={cardWidth} height={cardHeight} />
           </Button>
-          
         </ThreeCards>
         <RandomView>
-          {firstOpen && (
-            <PrimaryButton title='Play' onPress={() => random()} />
-          )}
+          {firstOpen && <PrimaryButton title="Play" onPress={() => random()} />}
           {!firstOpen && (
             <View>
-              <PrimaryButton title='Save & Play' onPress={() => save()} />
+              <PrimaryButton title="Save & Play" onPress={() => save()} />
               <EmptyView />
-              <SecondaryButton title='Play Again' onPress={() => playAgain()} />
+              <SecondaryButton title="Play Again" onPress={() => playAgain()} />
             </View>
           )}
         </RandomView>
@@ -336,10 +350,15 @@ const Game: FC<Props> = () => {
         </ThreeCards>
         <RandomView>
           {score2 > 0 && <Score2>{score2}</Score2>}
-          {score2 <= 0 && <SecondaryButton title='Show' onPress={() => showBelow()} />}
+          {score2 <= 0 && (
+            <SecondaryButton title="Show" onPress={() => showBelow()} />
+          )}
         </RandomView>
-        </Content>
-      </Container>
+        <HistoryView>
+          <PrimaryButton title="History" onPress={() => showHistory()} />
+        </HistoryView>
+      </Content>
+    </Container>
   );
 };
 
