@@ -6,6 +6,8 @@ import QuestionListModal from '../../components/QuestionListModal';
 import useWindowDimensions from 'hooks/useWindowDimensions';
 import PrimaryButton from 'components/buttons/PrimaryButton';
 import SecondaryButton from 'components/buttons/SecondaryButton';
+import Colors from 'theme/colors';
+import Fonts from 'theme/fonts';
 
 const hidenCard = require("../../images/blue_back.png")
 const cards = [
@@ -85,26 +87,28 @@ const ThreeCards = styled.View`
   margin-top: 20px;
 `;
 
-const ThreeButtons = styled.View`
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-`;
-
 const RandomView = styled.View`
-  flex-direction: row;
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-`;
-
-const ButtonContainer = styled.View`
-  width: 300px;
 `;
 
 const Button = styled.TouchableOpacity`
   padding: 10px;
+`;
+
+const Score1 = styled.Text`
+  font-weight: bold;
+  font-size: 28px;
+  color: ${Colors.RED};
+  margin-top: 8px;
+`;
+
+const Score2 = styled.Text`
+  font-weight: bold;
+  font-size: 28px;
+  color: ${Colors.RED};
+  margin-bottom: 8px;
 `;
 
 interface Props {
@@ -120,6 +124,9 @@ const Game: FC<Props> = () => {
   const [card4, setCard4] = useState(hidenCard);
   const [card5, setCard5] = useState(hidenCard);
   const [card6, setCard6] = useState(hidenCard);
+
+  const [score1, setScore1] = useState(0);
+  const [score2, setScore2] = useState(0);
 
   const [list, setList] = useState<number[]>([]);
 
@@ -145,19 +152,7 @@ const Game: FC<Props> = () => {
         numbers.push(number);
       }
     }
-    console.log(numbers);
-    // showAllCards(numbers);
     setList(numbers);
-    // const number1 = randomNumber(MAX_NUMBER);
-    // let number2 = randomNumber(MAX_NUMBER);
-    // while (number2 === number1) {
-    //   number2 = randomNumber(MAX_NUMBER);
-    // }
-    // let number3 = randomNumber(MAX_NUMBER);
-    // while (number3 === number1 || number3 === number2) {
-    //   number3 = randomNumber(MAX_NUMBER);
-    // }
-
   };
 
   const hideAllCards = () => {
@@ -188,6 +183,7 @@ const Game: FC<Props> = () => {
     setCard1(cards[list[0]]);
     setCard2(cards[list[1]]);
     setCard3(cards[list[2]]);
+    showScoreTeam1();
   }
 
   const showBelow = () => {
@@ -197,6 +193,7 @@ const Game: FC<Props> = () => {
     setCard4(cards[list[3]]);
     setCard5(cards[list[4]]);
     setCard6(cards[list[5]]);
+    showScoreTeam2();
   }
 
   const showCard = (position) => {
@@ -214,7 +211,43 @@ const Game: FC<Props> = () => {
   const random = () => {
     hideAllCards();
     random6Cards();
+    setScore1(0);
+    setScore2(0);
   };
+
+  const getScore = (number) => {
+    const div = number / 9;
+    if (div < 1) {
+      return number + 1;
+    } else if (div < 2) {
+      return Math.floor((number - 8) % 10);
+    } else if (div < 3) {
+      return Math.floor((number - 17) % 10);
+    } else {
+      return Math.floor((number - 26) % 10);
+    }
+  }
+
+  const getSum = (number1, number2, number3) => {
+    const sum = (getScore(number1) + getScore(number2) + getScore(number3)) % 10;
+    return sum > 0 ? sum : 10;
+  }
+
+  const showScoreTeam1 = () => {
+    if (list.length != 6) {
+      return;
+    }
+    const sum = getSum(list[0], list[1], list[2]);
+    setScore1(sum);
+  }
+
+  const showScoreTeam2 = () => {
+    if (list.length != 6) {
+      return;
+    }
+    const sum = getSum(list[3], list[4], list[5]);
+    setScore2(sum);
+  }
 
   return (
       <Container>
@@ -234,6 +267,7 @@ const Game: FC<Props> = () => {
         />
         <RandomView>
           <SecondaryButton title='Show' onPress={() => showAbove()} />
+          {score1 > 0 && <Score1>{score1}</Score1>}
         </RandomView>
         <ThreeCards>
           <Button onPress={() => showCard(0)}>
@@ -245,6 +279,7 @@ const Game: FC<Props> = () => {
           <Button onPress={() => showCard(2)}>
             <Image source={card3} width={cardWidth} height={cardHeight} />
           </Button>
+          
         </ThreeCards>
         <RandomView>
           <PrimaryButton title='Random' onPress={() => random()} />
@@ -261,6 +296,7 @@ const Game: FC<Props> = () => {
           </Button>
         </ThreeCards>
         <RandomView>
+          {score2 > 0 && <Score2>{score2}</Score2>}
           <SecondaryButton title='Show' onPress={() => showBelow()} />
         </RandomView>
         </Content>
