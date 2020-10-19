@@ -1,12 +1,12 @@
-import React, { FC, memo, useEffect, useState } from 'react';
-import styled from 'styled-components/native';
-import Colors from '../../theme/colors';
-import Fonts from '../../theme/fonts';
-import { FlatList } from 'react-native';
-import Modal from 'modal-react-native-web';
+import React, { FC, memo, useEffect, useState } from "react";
+import styled from "styled-components/native";
+import Colors from "../../theme/colors";
+import Fonts from "../../theme/fonts";
+import { FlatList } from "react-native";
+import Modal from "modal-react-native-web";
 import PrimaryButton from "components/buttons/PrimaryButton";
 import SecondaryButton from "components/buttons/SecondaryButton";
-import HistoryItem from './shared/HistoryItem';
+import HistoryItem from "./shared/HistoryItem";
 
 interface Props {
   modalVisible: boolean;
@@ -59,6 +59,7 @@ const CenteredView = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
+  padding: 16px;
 `;
 
 const ModalView = styled.View`
@@ -95,7 +96,7 @@ const QuestionItem = styled.View`
 const ItemText = styled(Fonts.Normal)<StyledProps>`
   font-size: 14px;
   background-color: ${Colors.BACKGROUND_COLOR};
-  color: ${props => props.color};
+  color: ${(props) => props.color};
   flex: 1;
 `;
 
@@ -105,30 +106,37 @@ const TitleText = styled(Fonts.Bold)`
   padding: 12px;
 `;
 
-const View = styled.View`
+const FooterView = styled.View`
   flex-direction: row;
   width: 50%;
   justify-content: center;
   align-items: center;
+  margin-bottom: 12px;
+  margin-top: 12px;
 `;
 
 const EmptyView = styled.View`
   width: 28px;
 `;
 
-const HistoryModal: FC<Props> = ({ modalVisible, setModalVisible, onReset, scores }) => {
-
+const HistoryModal: FC<Props> = ({
+  modalVisible,
+  setModalVisible,
+  onReset,
+  scores,
+}) => {
   const renderItem = ({ index }: { item; index }) => {
     const item = scores[index];
-    return (
-      <HistoryItem
-        item={item}
-      />
-    );
-  }
+    return <HistoryItem item={item} />;
+  };
 
   return (
-    <Modal animationType="slide" transparent visible={modalVisible} onBackdropPress={() => setModalVisible()}>
+    <Modal
+      animationType="slide"
+      transparent
+      visible={modalVisible}
+      onBackdropPress={() => setModalVisible()}
+    >
       <CenteredView>
         <ModalView>
           <TitleText>History</TitleText>
@@ -137,11 +145,11 @@ const HistoryModal: FC<Props> = ({ modalVisible, setModalVisible, onReset, score
             renderItem={renderItem}
             keyExtractor={(item, index) => `${index}_${item}`}
           />
-          <View>
-              <PrimaryButton title="Close" onPress={() => setModalVisible()} />
-              <EmptyView />
-              <SecondaryButton title="Reset" onPress={() => onReset()} />
-            </View>
+          <FooterView>
+            <PrimaryButton title="Close" onPress={() => setModalVisible()} />
+            <EmptyView />
+            <SecondaryButton title="Reset" onPress={() => onReset()} />
+          </FooterView>
         </ModalView>
       </CenteredView>
     </Modal>

@@ -90,13 +90,13 @@ const HistoryItem: FC<Props> = ({ item }) => {
   return (
     <ItemContainer>
       <View>
-        <Image source={cards[item[0]]} width={40} height={60} />
-        <Image source={cards[item[1]]} width={40} height={60} />
-        <Image source={cards[item[2]]} width={40} height={60} />
+        <Image source={cards[item[0]]} width={60} height={90} />
+        <Image source={cards[item[1]]} width={60} height={90} />
+        <Image source={cards[item[2]]} width={60} height={90} />
         <EmptyView />
-        <Image source={cards[item[3]]} width={40} height={60} />
-        <Image source={cards[item[4]]} width={40} height={60} />
-        <Image source={cards[item[5]]} width={40} height={60} />
+        <Image source={cards[item[3]]} width={60} height={90} />
+        <Image source={cards[item[4]]} width={60} height={90} />
+        <Image source={cards[item[5]]} width={60} height={90} />
       </View>
     </ItemContainer>
   );
