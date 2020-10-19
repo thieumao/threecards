@@ -4,10 +4,15 @@ import Colors from '../../theme/colors';
 import Fonts from '../../theme/fonts';
 import { FlatList } from 'react-native';
 import Modal from 'modal-react-native-web';
+import PrimaryButton from "components/buttons/PrimaryButton";
+import SecondaryButton from "components/buttons/SecondaryButton";
+import HistoryItem from './shared/HistoryItem';
 
 interface Props {
   modalVisible: boolean;
   setModalVisible: () => void;
+  onReset: () => void;
+  scores: any[];
 }
 
 interface StyledProps {
@@ -69,7 +74,7 @@ const ModalView = styled.View`
   height: 80%;
 `;
 
-const HistoryModal = styled(FlatList as new () => FlatList<string>)`
+const HistoryFlatList = styled(FlatList as new () => FlatList<string>)`
   width: 100%;
   height: 100%;
 `;
@@ -100,16 +105,43 @@ const TitleText = styled(Fonts.Bold)`
   padding: 12px;
 `;
 
-const QuestionListModal: FC<Props> = ({ modalVisible, setModalVisible }) => {
+const View = styled.View`
+  flex-direction: row;
+  width: 50%;
+  justify-content: center;
+  align-items: center;
+`;
+
+const EmptyView = styled.View`
+  width: 28px;
+`;
+
+const HistoryModal: FC<Props> = ({ modalVisible, setModalVisible, onReset, scores }) => {
+
+  const renderItem = ({ index }: { item; index }) => {
+    const item = scores[index];
+    return (
+      <HistoryItem
+        item={item}
+      />
+    );
+  }
 
   return (
     <Modal animationType="slide" transparent visible={modalVisible} onBackdropPress={() => setModalVisible()}>
       <CenteredView>
         <ModalView>
-          <TitleText>Select Question</TitleText>
-          <CloseButton onPress={() => setModalVisible()}>
-            <ButtonText>Close</ButtonText>
-          </CloseButton>
+          <TitleText>History</TitleText>
+          <HistoryFlatList
+            data={scores}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => `${index}_${item}`}
+          />
+          <View>
+              <PrimaryButton title="Close" onPress={() => setModalVisible()} />
+              <EmptyView />
+              <SecondaryButton title="Reset" onPress={() => onReset()} />
+            </View>
         </ModalView>
       </CenteredView>
     </Modal>

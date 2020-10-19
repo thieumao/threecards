@@ -293,10 +293,11 @@ const Game: FC<Props> = () => {
 
   const showHistory = () => {
     setIsShowHistory(true);
-    
-    console.log("allScores = ");
-    console.log(allScores);
-  };
+  }
+
+  const onReset = () => {
+    dispatch(removeAllScores());
+  }
 
   return (
     <Container>
@@ -307,6 +308,8 @@ const Game: FC<Props> = () => {
         <HistoryModal
           modalVisible={isShowHistory}
           setModalVisible={() => setIsShowHistory(false)}
+          onReset={() => onReset()}
+          scores={allScores}
         />
         <RandomView>
           {score1 <= 0 && (
