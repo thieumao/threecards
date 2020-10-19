@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { Helmet } from 'react-helmet';
 import HeaderWithTitle from '../../components/HeaderWithTitle';
@@ -8,6 +8,8 @@ import PrimaryButton from 'components/buttons/PrimaryButton';
 import SecondaryButton from 'components/buttons/SecondaryButton';
 import Colors from 'theme/colors';
 import Fonts from 'theme/fonts';
+import { addScore, removeAllScores } from 'store/actionTypes/actionType';
+import { useDispatch, useSelector } from 'react-redux';
 
 const hidenCard = require("../../images/blue_back.png")
 const cards = [
@@ -109,6 +111,18 @@ const Score2 = styled.Text`
   color: ${Colors.RED};
 `;
 
+const View = styled.View`
+  flex-direction: row;
+  width: 50%;
+  justify-content: center;
+  align-items: center;
+`;
+
+const EmptyView = styled.View`
+  width: 28px;
+`;
+
+
 interface Props {
   title: string;
   canBack?: boolean;
@@ -116,6 +130,10 @@ interface Props {
 }
 
 const Game: FC<Props> = () => {
+  const dispatch = useDispatch();
+
+  const [firstOpen, setFirstOpen] = useState(true);
+
   const [card1, setCard1] = useState(hidenCard);
   const [card2, setCard2] = useState(hidenCard);
   const [card3, setCard3] = useState(hidenCard);
@@ -211,7 +229,21 @@ const Game: FC<Props> = () => {
     random6Cards();
     setScore1(0);
     setScore2(0);
-  };
+    setFirstOpen(false);
+  }
+
+  const save = () => {
+    random();
+    dispatch(addScore(list));
+  }
+
+  const playAgain = () => {
+    dispatch(removeAllScores());
+  }
+
+  useEffect(() => {
+    dispatch(removeAllScores());
+  }, []);
 
   const getScore = (number) => {
     const div = number / 9;
@@ -280,7 +312,16 @@ const Game: FC<Props> = () => {
           
         </ThreeCards>
         <RandomView>
-          <PrimaryButton title='Random' onPress={() => random()} />
+          {firstOpen && (
+            <PrimaryButton title='Play' onPress={() => random()} />
+          )}
+          {!firstOpen && (
+            <View>
+              <PrimaryButton title='Save & Play' onPress={() => save()} />
+              <EmptyView />
+              <SecondaryButton title='Play Again' onPress={() => playAgain()} />
+            </View>
+          )}
         </RandomView>
         <ThreeCards>
           <Button onPress={() => showCard(3)}>
