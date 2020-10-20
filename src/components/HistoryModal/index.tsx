@@ -102,7 +102,7 @@ const ItemText = styled(Fonts.Normal)<StyledProps>`
 `;
 
 const TitleText = styled(Fonts.Bold)`
-  font-size: 16px;
+  font-size: 28px;
   background-color: ${Colors.BACKGROUND_COLOR};
   padding: 12px;
 `;
@@ -161,7 +161,6 @@ const HistoryModal: FC<Props> = ({
             <EmptyView />
             <SecondaryButton title="Reset" onPress={() => onReset()} />
           </FooterView>
-          <TitleText>{score1} - {score2}</TitleText>
         </ModalView>
       </CenteredView>
     </Modal>

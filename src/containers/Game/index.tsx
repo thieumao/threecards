@@ -138,10 +138,10 @@ const Game: FC<Props> = () => {
     setScore2(sum);
   };
 
-  // logic UI
-  useEffect(() => {
-    random6Cards();
-  }, []);
+  // // logic UI
+  // useEffect(() => {
+  //   random6Cards();
+  // }, []);
 
   const random6Cards = () => {
     setList(random6Numbers());
