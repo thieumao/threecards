@@ -1,131 +1,15 @@
-import React, { FC, useState } from "react";
-import styled from "styled-components/native";
+import React, { FC, useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import HistoryModal from "components/HistoryModal";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import PrimaryButton from "components/buttons/PrimaryButton";
 import SecondaryButton from "components/buttons/SecondaryButton";
-import Colors from "theme/colors";
 import { addScore, removeAllScores } from "store/actionTypes/actionType";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllScores } from "store/selectors/selectors";
-
-const hidenCard = require("images/blue_back.png");
-const cards = [
-  require("images/1H.png"),
-  require("images/2H.png"),
-  require("images/3H.png"),
-  require("images/4H.png"),
-  require("images/5H.png"),
-  require("images/6H.png"),
-  require("images/7H.png"),
-  require("images/8H.png"),
-  require("images/9H.png"),
-  require("images/1D.png"),
-  require("images/2D.png"),
-  require("images/3D.png"),
-  require("images/4D.png"),
-  require("images/5D.png"),
-  require("images/6D.png"),
-  require("images/7D.png"),
-  require("images/8D.png"),
-  require("images/9D.png"),
-  require("images/1C.png"),
-  require("images/2C.png"),
-  require("images/3C.png"),
-  require("images/4C.png"),
-  require("images/5C.png"),
-  require("images/6C.png"),
-  require("images/7C.png"),
-  require("images/8C.png"),
-  require("images/9C.png"),
-  require("images/1S.png"),
-  require("images/2S.png"),
-  require("images/3S.png"),
-  require("images/4S.png"),
-  require("images/5S.png"),
-  require("images/6S.png"),
-  require("images/7S.png"),
-  require("images/8S.png"),
-  require("images/9S.png"),
-];
-
-interface StyledProps {
-  size?: number;
-  width?: number;
-  height?: number;
-  marginHorizontal?: number;
-  paddingHorizontal?: number;
-  paddingRight?: number;
-  isCorrect?: boolean;
-  isSelected?: boolean;
-  isShown?: boolean;
-}
-
-const Container = styled.View`
-  display: flex;
-  width: 100%;
-  height: 100%;
-`;
-
-const Content = styled.View`
-  width: 100%;
-  height: 100%;
-  padding-top: 10px;
-`;
-
-const Image = styled.Image<StyledProps>`
-  width: ${(props) => props.width}px;
-  height: ${(props) => props.height}px;
-  resize-mode: contain;
-  align-self: center;
-`;
-
-const ThreeCards = styled.View`
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-`;
-
-const RandomView = styled.View`
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-`;
-
-const HistoryView = styled.View`
-  justify-content: center;
-  align-items: center;
-  margin-top: 40px;
-`;
-
-const Button = styled.TouchableOpacity`
-  padding: 10px;
-`;
-
-const Score1 = styled.Text`
-  font-weight: bold;
-  font-size: 28px;
-  color: ${Colors.RED};
-`;
-
-const Score2 = styled.Text`
-  font-weight: bold;
-  font-size: 28px;
-  color: ${Colors.RED};
-`;
-
-const View = styled.View`
-  flex-direction: row;
-  width: 50%;
-  justify-content: center;
-  align-items: center;
-`;
-
-const EmptyView = styled.View`
-  width: 28px;
-`;
+import { hidenCard, cards } from "constants/AppConstants";
+import { random6Numbers, getSum } from "./GameLogic";
+import { Container, Content, RandomView, ThreeCards, Image, Button, Score1, Score2, HistoryView, View, EmptyView } from "./UI";
 
 interface Props {
   title: string;
@@ -156,19 +40,12 @@ const Game: FC<Props> = () => {
   const cardWidth = width < height ? width / 5 : height / 5;
   const cardHeight = (cardWidth * 3) / 2;
 
-  const randomNumber = (number) =>
-    Math.floor(Math.random() * Math.floor(number));
+  useEffect(() => {
+    random6Cards();
+  }, []);
 
   const random6Cards = () => {
-    const MAX_NUMBER = 36;
-    let numbers: number[] = [];
-    while (numbers.length < 6) {
-      const number = randomNumber(MAX_NUMBER);
-      if (!numbers.includes(number)) {
-        numbers.push(number);
-      }
-    }
-    setList(numbers);
+    setList(random6Numbers());
   };
 
   const hideAllCards = () => {
@@ -254,25 +131,6 @@ const Game: FC<Props> = () => {
     random();
   };
 
-  const getScore = (number) => {
-    const div = number / 9;
-    if (div < 1) {
-      return number + 1;
-    } else if (div < 2) {
-      return Math.floor((number - 8) % 10);
-    } else if (div < 3) {
-      return Math.floor((number - 17) % 10);
-    } else {
-      return Math.floor((number - 26) % 10);
-    }
-  };
-
-  const getSum = (number1, number2, number3) => {
-    const sum =
-      (getScore(number1) + getScore(number2) + getScore(number3)) % 10;
-    return sum > 0 ? sum : 10;
-  };
-
   const showScoreTeam1 = () => {
     if (list.length != 6) {
       return;
@@ -293,11 +151,11 @@ const Game: FC<Props> = () => {
 
   const showHistory = () => {
     setIsShowHistory(true);
-  }
+  };
 
   const onReset = () => {
     dispatch(removeAllScores());
-  }
+  };
 
   return (
     <Container>
@@ -329,12 +187,14 @@ const Game: FC<Props> = () => {
           </Button>
         </ThreeCards>
         <RandomView>
-          {firstOpen && <PrimaryButton title="Play" onPress={() => random()} />}
+          {firstOpen && (
+            <PrimaryButton title="Shuffle" onPress={() => random()} />
+          )}
           {!firstOpen && (
             <View>
-              <PrimaryButton title="Save & Play" onPress={() => save()} />
+              <PrimaryButton title="Save & Shuffle" onPress={() => save()} />
               <EmptyView />
-              <SecondaryButton title="Play Again" onPress={() => playAgain()} />
+              <SecondaryButton title="Shuffle" onPress={() => playAgain()} />
             </View>
           )}
         </RandomView>
