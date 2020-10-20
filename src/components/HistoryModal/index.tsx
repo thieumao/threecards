@@ -7,6 +7,7 @@ import Modal from "modal-react-native-web";
 import PrimaryButton from "components/buttons/PrimaryButton";
 import SecondaryButton from "components/buttons/SecondaryButton";
 import HistoryItem from "./shared/HistoryItem";
+import { isWin } from "containers/Game/GameLogic";
 
 interface Props {
   modalVisible: boolean;
@@ -127,8 +128,18 @@ const HistoryModal: FC<Props> = ({
 }) => {
   const renderItem = ({ index }: { item; index }) => {
     const item = scores[index];
-    return <HistoryItem item={item} />;
+    return <HistoryItem item={item} isWin={isWin(item) || false} />;
   };
+
+  let score1 = 0;
+  let score2 = 0;
+  for (let score of scores) {
+    if (isWin(score)) {
+      score1 += 1;
+    } else {
+      score2 += 1;
+    }
+  }
 
   return (
     <Modal
@@ -139,7 +150,7 @@ const HistoryModal: FC<Props> = ({
     >
       <CenteredView>
         <ModalView>
-          <TitleText>History</TitleText>
+          <TitleText>{`Result: ${score1} - ${score2}`}</TitleText>
           <HistoryFlatList
             data={scores}
             renderItem={renderItem}
@@ -150,10 +161,11 @@ const HistoryModal: FC<Props> = ({
             <EmptyView />
             <SecondaryButton title="Reset" onPress={() => onReset()} />
           </FooterView>
+          <TitleText>{score1} - {score2}</TitleText>
         </ModalView>
       </CenteredView>
     </Modal>
   );
 };
 
-export default memo(HistoryModal);
+export default HistoryModal;

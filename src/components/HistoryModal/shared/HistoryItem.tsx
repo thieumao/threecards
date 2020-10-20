@@ -3,9 +3,11 @@ import styled from "styled-components/native";
 import Fonts from "theme/fonts";
 import Colors from "theme/colors";
 import { hidenCard, cards, StyledProps } from "constants/AppConstants";
+import { IoIosCheckmarkCircle } from 'react-icons/io';
 
 interface Props {
   item: any;
+  isWin: boolean;
 }
 
 const Text = styled(Fonts.Bold)`
@@ -36,10 +38,17 @@ const EmptyView = styled.View`
   width: 28px;
 `;
 
-const HistoryItem: FC<Props> = ({ item }) => {
+const NoneView = styled.View`
+  width: 28px;
+  height: 2px;
+`;
+
+const HistoryItem: FC<Props> = ({ item, isWin }) => {
   return (
     <ItemContainer>
       <View>
+        {isWin && (<IoIosCheckmarkCircle color={Colors.MAIN_COLOR} size={28} />)}
+        {!isWin && <NoneView />}
         <Image source={cards[item[0]]} width={60} height={90} />
         <Image source={cards[item[1]]} width={60} height={90} />
         <Image source={cards[item[2]]} width={60} height={90} />
@@ -47,6 +56,8 @@ const HistoryItem: FC<Props> = ({ item }) => {
         <Image source={cards[item[3]]} width={60} height={90} />
         <Image source={cards[item[4]]} width={60} height={90} />
         <Image source={cards[item[5]]} width={60} height={90} />
+        {!isWin && (<IoIosCheckmarkCircle color={Colors.MAIN_COLOR} size={28} />)}
+        {isWin && <NoneView />}
       </View>
     </ItemContainer>
   );
