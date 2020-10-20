@@ -9,7 +9,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllScores } from "store/selectors/selectors";
 import { hidenCard, cards } from "constants/AppConstants";
 import { random6Numbers, getSum } from "./GameLogic";
-import { Container, Content, RandomView, ThreeCards, Image, Button, Score1, Score2, HistoryView, View, EmptyView } from "./UI";
+import {
+  Container,
+  Content,
+  RandomView,
+  ThreeCards,
+  Image,
+  Button,
+  Score1,
+  Score2,
+  HistoryView,
+  View,
+  EmptyView,
+} from "./UI";
 
 interface Props {
   title: string;
@@ -20,6 +32,9 @@ interface Props {
 const Game: FC<Props> = () => {
   const dispatch = useDispatch();
   const allScores = useSelector(getAllScores);
+
+  // state
+  const [isShowHistory, setIsShowHistory] = useState(false);
 
   const [firstOpen, setFirstOpen] = useState(true);
 
@@ -40,14 +55,7 @@ const Game: FC<Props> = () => {
   const cardWidth = width < height ? width / 5 : height / 5;
   const cardHeight = (cardWidth * 3) / 2;
 
-  useEffect(() => {
-    random6Cards();
-  }, []);
-
-  const random6Cards = () => {
-    setList(random6Numbers());
-  };
-
+  // show / hide
   const hideAllCards = () => {
     setCard1(hidenCard);
     setCard2(hidenCard);
@@ -114,6 +122,31 @@ const Game: FC<Props> = () => {
     }
   };
 
+  const showScoreTeam1 = () => {
+    if (list.length != 6) {
+      return;
+    }
+    const sum = getSum(list[0], list[1], list[2]);
+    setScore1(sum);
+  };
+
+  const showScoreTeam2 = () => {
+    if (list.length != 6) {
+      return;
+    }
+    const sum = getSum(list[3], list[4], list[5]);
+    setScore2(sum);
+  };
+
+  // logic UI
+  useEffect(() => {
+    random6Cards();
+  }, []);
+
+  const random6Cards = () => {
+    setList(random6Numbers());
+  };
+
   const random = () => {
     hideAllCards();
     random6Cards();
@@ -131,32 +164,6 @@ const Game: FC<Props> = () => {
     random();
   };
 
-  const showScoreTeam1 = () => {
-    if (list.length != 6) {
-      return;
-    }
-    const sum = getSum(list[0], list[1], list[2]);
-    setScore1(sum);
-  };
-
-  const showScoreTeam2 = () => {
-    if (list.length != 6) {
-      return;
-    }
-    const sum = getSum(list[3], list[4], list[5]);
-    setScore2(sum);
-  };
-
-  const [isShowHistory, setIsShowHistory] = useState(false);
-
-  const showHistory = () => {
-    setIsShowHistory(true);
-  };
-
-  const onReset = () => {
-    dispatch(removeAllScores());
-  };
-
   return (
     <Container>
       <Helmet>
@@ -166,7 +173,7 @@ const Game: FC<Props> = () => {
         <HistoryModal
           modalVisible={isShowHistory}
           setModalVisible={() => setIsShowHistory(false)}
-          onReset={() => onReset()}
+          onReset={() => dispatch(removeAllScores())}
           scores={allScores}
         />
         <RandomView>
@@ -216,7 +223,10 @@ const Game: FC<Props> = () => {
           )}
         </RandomView>
         <HistoryView>
-          <PrimaryButton title="History" onPress={() => showHistory()} />
+          <PrimaryButton
+            title="History"
+            onPress={() => setIsShowHistory(true)}
+          />
         </HistoryView>
       </Content>
     </Container>
