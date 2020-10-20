@@ -10,7 +10,8 @@ export interface StyledProps {
   isShown?: boolean;
 }
 
-export const hidenCard = require("images/blue_back.png");
+export const hidenCard = require("images/blue_back.png")
+export const hidenCard2 = require("images/gray_back.png");
 export const cards = [
   require("images/1H.png"),
   require("images/2H.png"),
