@@ -8,7 +8,7 @@ import { addScore, removeAllScores } from "store/actionTypes/actionType";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllScores } from "store/selectors/selectors";
 import { hidenCard, cards } from "constants/AppConstants";
-import { random6Numbers, getSum } from "./GameLogic";
+import { random6Numbers, getSum, isWin } from "./GameLogic";
 import {
   Container,
   Content,
@@ -166,6 +166,16 @@ const Game: FC<Props> = () => {
     random();
   };
 
+  let totalScore1 = 0;
+  let totalScore2 = 0;
+  for (let s of allScores) {
+    if (isWin(s)) {
+      totalScore1 += 1;
+    } else {
+      totalScore2 += 1;
+    }
+  }
+
   const isShownTotalScore = width > height * 1.4;
   return (
     <Container>
@@ -173,7 +183,7 @@ const Game: FC<Props> = () => {
         <title>{"Three Cards"}</title>
       </Helmet>
       <HorizontalView>
-        {isShownTotalScore && <TotalScore>{8}</TotalScore>}
+        {isShownTotalScore && <TotalScore>{totalScore1}</TotalScore>}
         <Content>
           <HistoryModal
             modalVisible={isShowHistory}
@@ -234,7 +244,7 @@ const Game: FC<Props> = () => {
             />
           </HistoryView>
         </Content>
-        {isShownTotalScore && <TotalScore>{8}</TotalScore>}     
+        {isShownTotalScore && <TotalScore>{totalScore2}</TotalScore>}     
       </HorizontalView>
     </Container>
   );
