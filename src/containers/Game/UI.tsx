@@ -8,8 +8,26 @@ export const Container = styled.View`
   height: 100%;
 `;
 
-export const Content = styled.View`
+export const HorizontalView = styled.View`
   width: 100%;
+  height: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const TotalScore = styled.Text`
+  font-weight: bold;
+  font-size: 400;
+  color: ${Colors.MAIN_COLOR};
+  align-self: center;
+  width: 20%;
+  height: 100%;
+  text-align: center;
+`;
+
+export const Content = styled.View`
+  width: 60%;
   height: 100%;
   padding-top: 10px;
 `;

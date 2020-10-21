@@ -21,6 +21,8 @@ import {
   HistoryView,
   View,
   EmptyView,
+  HorizontalView,
+  TotalScore,
 } from "./UI";
 
 interface Props {
@@ -164,71 +166,76 @@ const Game: FC<Props> = () => {
     random();
   };
 
+  const isShownTotalScore = width > height * 1.4;
   return (
     <Container>
       <Helmet>
         <title>{"Three Cards"}</title>
       </Helmet>
-      <Content>
-        <HistoryModal
-          modalVisible={isShowHistory}
-          setModalVisible={() => setIsShowHistory(false)}
-          onReset={() => dispatch(removeAllScores())}
-          scores={allScores}
-        />
-        <RandomView>
-          {score1 <= 0 && (
-            <SecondaryButton title="Show" onPress={() => showAbove()} />
-          )}
-          {score1 > 0 && <Score1>{score1}</Score1>}
-        </RandomView>
-        <ThreeCards>
-          <Button onPress={() => showCard(0)}>
-            <Image source={card1} width={cardWidth} height={cardHeight} />
-          </Button>
-          <Button onPress={() => showCard(1)}>
-            <Image source={card2} width={cardWidth} height={cardHeight} />
-          </Button>
-          <Button onPress={() => showCard(2)}>
-            <Image source={card3} width={cardWidth} height={cardHeight} />
-          </Button>
-        </ThreeCards>
-        <RandomView>
-          {firstOpen && (
-            <PrimaryButton title="Shuffle" onPress={() => random()} />
-          )}
-          {!firstOpen && (
-            <View>
-              <PrimaryButton title="Save & Shuffle" onPress={() => save()} />
-              <EmptyView />
-              <SecondaryButton title="Shuffle" onPress={() => playAgain()} />
-            </View>
-          )}
-        </RandomView>
-        <ThreeCards>
-          <Button onPress={() => showCard(3)}>
-            <Image source={card4} width={cardWidth} height={cardHeight} />
-          </Button>
-          <Button onPress={() => showCard(4)}>
-            <Image source={card5} width={cardWidth} height={cardHeight} />
-          </Button>
-          <Button onPress={() => showCard(5)}>
-            <Image source={card6} width={cardWidth} height={cardHeight} />
-          </Button>
-        </ThreeCards>
-        <RandomView>
-          {score2 > 0 && <Score2>{score2}</Score2>}
-          {score2 <= 0 && (
-            <SecondaryButton title="Show" onPress={() => showBelow()} />
-          )}
-        </RandomView>
-        <HistoryView>
-          <PrimaryButton
-            title="History"
-            onPress={() => setIsShowHistory(true)}
+      <HorizontalView>
+        {isShownTotalScore && <TotalScore>{8}</TotalScore>}
+        <Content>
+          <HistoryModal
+            modalVisible={isShowHistory}
+            setModalVisible={() => setIsShowHistory(false)}
+            onReset={() => dispatch(removeAllScores())}
+            scores={allScores}
           />
-        </HistoryView>
-      </Content>
+          <RandomView>
+            {score1 <= 0 && (
+              <SecondaryButton title="Show" onPress={() => showAbove()} />
+            )}
+            {score1 > 0 && <Score1>{score1}</Score1>}
+          </RandomView>
+          <ThreeCards>
+            <Button onPress={() => showCard(0)}>
+              <Image source={card1} width={cardWidth} height={cardHeight} />
+            </Button>
+            <Button onPress={() => showCard(1)}>
+              <Image source={card2} width={cardWidth} height={cardHeight} />
+            </Button>
+            <Button onPress={() => showCard(2)}>
+              <Image source={card3} width={cardWidth} height={cardHeight} />
+            </Button>
+          </ThreeCards>
+          <RandomView>
+            {firstOpen && (
+              <PrimaryButton title="Shuffle" onPress={() => random()} />
+            )}
+            {!firstOpen && (
+              <View>
+                <PrimaryButton title="Save & Shuffle" onPress={() => save()} />
+                <EmptyView />
+                <SecondaryButton title="Shuffle" onPress={() => playAgain()} />
+              </View>
+            )}
+          </RandomView>
+          <ThreeCards>
+            <Button onPress={() => showCard(3)}>
+              <Image source={card4} width={cardWidth} height={cardHeight} />
+            </Button>
+            <Button onPress={() => showCard(4)}>
+              <Image source={card5} width={cardWidth} height={cardHeight} />
+            </Button>
+            <Button onPress={() => showCard(5)}>
+              <Image source={card6} width={cardWidth} height={cardHeight} />
+            </Button>
+          </ThreeCards>
+          <RandomView>
+            {score2 > 0 && <Score2>{score2}</Score2>}
+            {score2 <= 0 && (
+              <SecondaryButton title="Show" onPress={() => showBelow()} />
+            )}
+          </RandomView>
+          <HistoryView>
+            <PrimaryButton
+              title="History"
+              onPress={() => setIsShowHistory(true)}
+            />
+          </HistoryView>
+        </Content>
+        {isShownTotalScore && <TotalScore>{8}</TotalScore>}     
+      </HorizontalView>
     </Container>
   );
 };
