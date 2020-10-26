@@ -18,7 +18,7 @@ export const HorizontalView = styled.View`
 
 export const TotalScore = styled.Text`
   font-weight: bold;
-  font-size: 400;
+  font-size: 352;
   color: ${Colors.MAIN_COLOR};
   align-self: center;
   width: 20%;
@@ -70,13 +70,13 @@ export const Team = styled.Text`
 
 export const Score1 = styled.Text`
   font-weight: bold;
-  font-size: 20px;
+  font-size: 22px;
   color: ${Colors.RED};
 `;
 
 export const Score2 = styled.Text`
   font-weight: bold;
-  font-size: 20px;
+  font-size: 22px;
   color: ${Colors.RED};
 `;
 
