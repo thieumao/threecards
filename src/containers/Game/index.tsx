@@ -40,6 +40,14 @@ const Game: FC<Props> = () => {
   const [isShowHistory, setIsShowHistory] = useState(false);
 
   const [isChanged, setIsChanged] = useState(false);
+  const [canSave, setCanSave] = useState(false);
+
+  const [isShownCard1, setIsShownCard1] = useState(false);
+  const [isShownCard2, setIsShownCard2] = useState(false);
+  const [isShownCard3, setIsShownCard3] = useState(false);
+  const [isShownCard4, setIsShownCard4] = useState(false);
+  const [isShownCard5, setIsShownCard5] = useState(false);
+  const [isShownCard6, setIsShownCard6] = useState(false);
 
   const [firstOpen, setFirstOpen] = useState(true);
 
@@ -75,11 +83,17 @@ const Game: FC<Props> = () => {
       return;
     }
     setCard1(cards[list[0]]);
+    setIsShownCard1(true);
     setCard2(cards[list[1]]);
+    setIsShownCard2(true);
     setCard3(cards[list[2]]);
+    setIsShownCard3(true);
     setCard4(cards[list[3]]);
+    setIsShownCard4(true);
     setCard5(cards[list[4]]);
+    setIsShownCard5(true);
     setCard6(cards[list[5]]);
+    setIsShownCard6(true);
   };
 
   const showAbove = () => {
@@ -87,8 +101,11 @@ const Game: FC<Props> = () => {
       return;
     }
     setCard1(cards[list[0]]);
+    setIsShownCard1(true);
     setCard2(cards[list[1]]);
+    setIsShownCard2(true);
     setCard3(cards[list[2]]);
+    setIsShownCard3(true);
     showScoreTeam1();
   };
 
@@ -97,8 +114,11 @@ const Game: FC<Props> = () => {
       return;
     }
     setCard4(cards[list[3]]);
+    setIsShownCard4(true);
     setCard5(cards[list[4]]);
+    setIsShownCard5(true);
     setCard6(cards[list[5]]);
+    setIsShownCard6(true);
     showScoreTeam2();
   };
 
@@ -106,21 +126,27 @@ const Game: FC<Props> = () => {
     switch (position) {
       case 0:
         setCard1(cards[list[0]]);
+        setIsShownCard1(true);
         break;
       case 1:
         setCard2(cards[list[1]]);
+        setIsShownCard2(true);
         break;
       case 2:
         setCard3(cards[list[2]]);
+        setIsShownCard3(true);
         break;
       case 3:
         setCard4(cards[list[3]]);
+        setIsShownCard4(true);
         break;
       case 4:
         setCard5(cards[list[4]]);
+        setIsShownCard5(true);
         break;
       case 5:
         setCard6(cards[list[5]]);
+        setIsShownCard6(true);
         break;
       default:
         break;
@@ -157,14 +183,25 @@ const Game: FC<Props> = () => {
     random6Cards();
     setScore1(0);
     setScore2(0);
+    setIsShownCard1(false);
+    setIsShownCard2(false);
+    setIsShownCard3(false);
+    setIsShownCard4(false);
+    setIsShownCard5(false);
+    setIsShownCard6(false);
+    setCanSave(false);
     setFirstOpen(false);
   };
 
   const save = () => {
-    const changedList = [list[3], list[4], list[5], list[0], list[1], list[2]];
-    const newList = isChanged ? changedList : list;
-    dispatch(addScore(newList));
-    random();
+    const isCanSave = isShownCard1 && isShownCard2 && isShownCard3 && isShownCard4 && isShownCard5 && isShownCard6;
+    setCanSave(isCanSave);
+    if (isCanSave) {
+      const changedList = [list[3], list[4], list[5], list[0], list[1], list[2]];
+      const newList = isChanged ? changedList : list;
+      dispatch(addScore(newList));
+      random();
+    }
   };
 
   const change = () => {
@@ -226,8 +263,8 @@ const Game: FC<Props> = () => {
             )}
             {!firstOpen && (
               <View>
-                <PrimaryButton title="Save" onPress={() => save()} />
-                <EmptyView />
+                {canSave && <PrimaryButton title="Save" onPress={() => save()} />}
+                {canSave && <EmptyView />}
                 <SecondaryButton title="Shuffle" onPress={() => playAgain()} />
                 <EmptyView />
                 <PrimaryButton title="Change" onPress={() => change()} />
