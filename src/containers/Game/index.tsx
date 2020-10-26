@@ -23,6 +23,7 @@ import {
   EmptyView,
   HorizontalView,
   TotalScore,
+  Team,
 } from "./UI";
 
 interface Props {
@@ -37,6 +38,8 @@ const Game: FC<Props> = () => {
 
   // state
   const [isShowHistory, setIsShowHistory] = useState(false);
+
+  const [isChanged, setIsChanged] = useState(false);
 
   const [firstOpen, setFirstOpen] = useState(true);
 
@@ -158,7 +161,15 @@ const Game: FC<Props> = () => {
   };
 
   const save = () => {
-    dispatch(addScore(list));
+    const changedList = [list[3], list[4], list[5], list[0], list[1], list[2]];
+    const newList = isChanged ? changedList : list;
+    dispatch(addScore(newList));
+    random();
+  };
+
+  const change = () => {
+    const newValue = !isChanged;
+    setIsChanged(newValue);
     random();
   };
 
@@ -192,6 +203,7 @@ const Game: FC<Props> = () => {
             scores={allScores}
           />
           <RandomView>
+            <Team>{`Team ${isChanged ? 2 : 1} :`}</Team>
             {score1 <= 0 && (
               <SecondaryButton title="Show" onPress={() => showAbove()} />
             )}
@@ -214,9 +226,11 @@ const Game: FC<Props> = () => {
             )}
             {!firstOpen && (
               <View>
-                <PrimaryButton title="Save & Shuffle" onPress={() => save()} />
+                <PrimaryButton title="Save" onPress={() => save()} />
                 <EmptyView />
                 <SecondaryButton title="Shuffle" onPress={() => playAgain()} />
+                <EmptyView />
+                <PrimaryButton title="Change" onPress={() => change()} />
               </View>
             )}
           </RandomView>
@@ -232,6 +246,7 @@ const Game: FC<Props> = () => {
             </Button>
           </ThreeCards>
           <RandomView>
+            <Team>{`Team ${isChanged ? 1 : 2} :`}</Team>
             {score2 > 0 && <Score2>{score2}</Score2>}
             {score2 <= 0 && (
               <SecondaryButton title="Show" onPress={() => showBelow()} />

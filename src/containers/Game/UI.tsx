@@ -43,34 +43,40 @@ export const ThreeCards = styled.View`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 16px;
 `;
 
 export const RandomView = styled.View`
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 16px;
 `;
 
 export const HistoryView = styled.View`
   justify-content: center;
   align-items: center;
-  margin-top: 40px;
+  margin-top: 32px;
 `;
 
 export const Button = styled.TouchableOpacity`
   padding: 10px;
 `;
 
+export const Team = styled.Text`
+  font-weight: bold;
+  font-size: 20px;
+  color: ${Colors.MAIN_COLOR};
+`;
+
 export const Score1 = styled.Text`
   font-weight: bold;
-  font-size: 28px;
+  font-size: 20px;
   color: ${Colors.RED};
 `;
 
 export const Score2 = styled.Text`
   font-weight: bold;
-  font-size: 28px;
+  font-size: 20px;
   color: ${Colors.RED};
 `;
 
