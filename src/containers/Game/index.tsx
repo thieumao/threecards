@@ -40,7 +40,6 @@ const Game: FC<Props> = () => {
   const [isShowHistory, setIsShowHistory] = useState(false);
 
   const [isChanged, setIsChanged] = useState(false);
-  const [canSave, setCanSave] = useState(false);
 
   const [isShownCard1, setIsShownCard1] = useState(false);
   const [isShownCard2, setIsShownCard2] = useState(false);
@@ -189,13 +188,11 @@ const Game: FC<Props> = () => {
     setIsShownCard4(false);
     setIsShownCard5(false);
     setIsShownCard6(false);
-    setCanSave(false);
     setFirstOpen(false);
   };
 
   const save = () => {
     const isCanSave = isShownCard1 && isShownCard2 && isShownCard3 && isShownCard4 && isShownCard5 && isShownCard6;
-    setCanSave(isCanSave);
     if (isCanSave) {
       const changedList = [list[3], list[4], list[5], list[0], list[1], list[2]];
       const newList = isChanged ? changedList : list;
@@ -225,6 +222,7 @@ const Game: FC<Props> = () => {
   }
 
   const isShownTotalScore = width > height * 1.4;
+  const canBeSave = isShownCard1 && isShownCard2 && isShownCard3 && isShownCard4 && isShownCard5 && isShownCard6;
   return (
     <Container>
       <Helmet>
@@ -263,8 +261,8 @@ const Game: FC<Props> = () => {
             )}
             {!firstOpen && (
               <View>
-                {canSave && <PrimaryButton title="Save" onPress={() => save()} />}
-                {canSave && <EmptyView />}
+                {canBeSave && <PrimaryButton title="Save" onPress={() => save()} />}
+                {canBeSave && <EmptyView />}
                 <SecondaryButton title="Shuffle" onPress={() => playAgain()} />
                 <EmptyView />
                 <PrimaryButton title="Change" onPress={() => change()} />
