@@ -105,7 +105,7 @@ const Game: FC<Props> = () => {
     setIsShownCard2(true);
     setCard3(cards[list[2]]);
     setIsShownCard3(true);
-    showScoreTeam1();
+    showScoreAbove();
   };
 
   const showBelow = () => {
@@ -118,41 +118,59 @@ const Game: FC<Props> = () => {
     setIsShownCard5(true);
     setCard6(cards[list[5]]);
     setIsShownCard6(true);
-    showScoreTeam2();
+    showScoreBelow();
   };
 
-  const showCard = (position) => {
+  const showCard = async (position) => {
     switch (position) {
       case 0:
         setCard1(cards[list[0]]);
         setIsShownCard1(true);
+        if (isShownCard2 && isShownCard3) {
+          showScoreAbove();
+        }
         break;
       case 1:
         setCard2(cards[list[1]]);
         setIsShownCard2(true);
+        if (isShownCard1 && isShownCard3) {
+          showScoreAbove();
+        }
         break;
       case 2:
         setCard3(cards[list[2]]);
         setIsShownCard3(true);
+        if (isShownCard1 && isShownCard2) {
+          showScoreAbove();
+        }
         break;
       case 3:
         setCard4(cards[list[3]]);
         setIsShownCard4(true);
+        if (isShownCard5 && isShownCard6) {
+          showScoreBelow();
+        }
         break;
       case 4:
         setCard5(cards[list[4]]);
         setIsShownCard5(true);
+        if (isShownCard4 && isShownCard6) {
+          showScoreBelow();
+        }
         break;
       case 5:
         setCard6(cards[list[5]]);
         setIsShownCard6(true);
+        if (isShownCard4 && isShownCard5) {
+          showScoreBelow();
+        }
         break;
       default:
         break;
     }
   };
 
-  const showScoreTeam1 = () => {
+  const showScoreAbove = () => {
     if (list.length != 6) {
       return;
     }
@@ -160,7 +178,7 @@ const Game: FC<Props> = () => {
     setScore1(sum);
   };
 
-  const showScoreTeam2 = () => {
+  const showScoreBelow = () => {
     if (list.length != 6) {
       return;
     }
@@ -223,6 +241,7 @@ const Game: FC<Props> = () => {
 
   const isShownTotalScore = width > height * 1.4;
   const canBeSave = isShownCard1 && isShownCard2 && isShownCard3 && isShownCard4 && isShownCard5 && isShownCard6;
+
   return (
     <Container>
       <Helmet>

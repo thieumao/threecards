@@ -56,6 +56,8 @@ export const HistoryView = styled.View`
   justify-content: center;
   align-items: center;
   margin-top: 32px;
+  width: 150px;
+  align-self: center;
 `;
 
 export const Button = styled.TouchableOpacity`
