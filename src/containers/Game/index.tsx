@@ -186,10 +186,10 @@ const Game: FC<Props> = () => {
     setScore2(sum);
   };
 
-  // // logic UI
-  // useEffect(() => {
-  //   random6Cards();
-  // }, []);
+  // logic UI
+  useEffect(() => {
+    random6Cards();
+  }, []);
 
   const random6Cards = () => {
     setList(random6Numbers());
@@ -275,18 +275,11 @@ const Game: FC<Props> = () => {
             </Button>
           </ThreeCards>
           <RandomView>
-            {firstOpen && (
-              <PrimaryButton title="Shuffle" onPress={() => random()} />
-            )}
-            {!firstOpen && (
               <View>
                 {canBeSave && <PrimaryButton title="Save" onPress={() => save()} />}
                 {canBeSave && <EmptyView />}
-                <SecondaryButton title="Shuffle" onPress={() => playAgain()} />
-                <EmptyView />
-                <PrimaryButton title="Change" onPress={() => change()} />
+                <SecondaryButton title="Change" onPress={() => change()} />
               </View>
-            )}
           </RandomView>
           <ThreeCards>
             <Button onPress={() => showCard(3)}>
