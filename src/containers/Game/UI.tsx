@@ -17,7 +17,7 @@ export const HorizontalView = styled.View`
 `;
 
 export const Content = styled.View`
-  width: 60%;
+  width: 50%;
   height: 100%;
   padding-top: 10px;
 `;
@@ -87,7 +87,7 @@ export const TotalScoreView = styled.View`
   justify-content: center;
   align-items: center;
   height: 100%;
-  width: 20%;
+  width: 25%;
 `;
 
 export const TotalScore = styled.Text`
