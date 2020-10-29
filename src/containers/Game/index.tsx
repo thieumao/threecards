@@ -24,6 +24,8 @@ import {
   HorizontalView,
   TotalScore,
   Team,
+  TotalScoreView,
+  TeamName,
 } from "./UI";
 
 interface Props {
@@ -251,7 +253,12 @@ const Game: FC<Props> = () => {
         History
       </Button>
       <HorizontalView>
-        {isShownTotalScore && <TotalScore>{totalScore1}</TotalScore>}
+        {isShownTotalScore && (
+          <TotalScoreView>
+            <TotalScore>{totalScore1}</TotalScore>
+            <TeamName>Team 1</TeamName>
+          </TotalScoreView>
+        )}
         <Content>
           <HistoryModal
             modalVisible={isShowHistory}
@@ -303,7 +310,12 @@ const Game: FC<Props> = () => {
             )}
           </RandomView>
         </Content>
-        {isShownTotalScore && <TotalScore>{totalScore2}</TotalScore>}     
+        {isShownTotalScore && (
+          <TotalScoreView>
+            <TotalScore>{totalScore2}</TotalScore>
+            <TeamName>Team 2</TeamName>
+          </TotalScoreView>
+        )}
       </HorizontalView>
     </Container>
   );

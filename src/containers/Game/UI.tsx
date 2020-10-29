@@ -16,16 +16,6 @@ export const HorizontalView = styled.View`
   align-items: center;
 `;
 
-export const TotalScore = styled.Text`
-  font-weight: bold;
-  font-size: 352;
-  color: ${Colors.MAIN_COLOR};
-  align-self: center;
-  width: 20%;
-  height: 100%;
-  text-align: center;
-`;
-
 export const Content = styled.View`
   width: 60%;
   height: 100%;
@@ -91,4 +81,26 @@ export const View = styled.View`
 
 export const EmptyView = styled.View`
   width: 28px;
+`;
+
+export const TotalScoreView = styled.View`
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 20%;
+`;
+
+export const TotalScore = styled.Text`
+  font-weight: bold;
+  font-size: 300px;
+  color: ${Colors.MAIN_COLOR};
+  align-self: center;
+  width: 100%;
+  text-align: center;
+`;
+
+export const TeamName = styled.Text`
+  align-self: center;
+  width: 100%;
+  text-align: center;
 `;
