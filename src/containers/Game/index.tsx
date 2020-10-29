@@ -247,6 +247,9 @@ const Game: FC<Props> = () => {
       <Helmet>
         <title>{"Three Cards"}</title>
       </Helmet>
+      <Button onPress={() => setIsShowHistory(true)}>
+        History
+      </Button>
       <HorizontalView>
         {isShownTotalScore && <TotalScore>{totalScore1}</TotalScore>}
         <Content>
@@ -299,12 +302,6 @@ const Game: FC<Props> = () => {
               <SecondaryButton title="Show" onPress={() => showBelow()} />
             )}
           </RandomView>
-          <HistoryView>
-            <PrimaryButton
-              title="History"
-              onPress={() => setIsShowHistory(true)}
-            />
-          </HistoryView>
         </Content>
         {isShownTotalScore && <TotalScore>{totalScore2}</TotalScore>}     
       </HorizontalView>
